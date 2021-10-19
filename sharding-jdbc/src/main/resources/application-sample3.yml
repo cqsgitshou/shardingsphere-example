@@ -50,16 +50,6 @@ spring:
             inline:
               sharding-column: age    # 分片字段（分片键）
               algorithm-expression: ksd_user$->{age % 2} # 分片算法表达式
-        user_order:
-          # 数据节点：数据源$->{0..N}.逻辑表名$->{0..N}
-          actual-data-nodes: ds0.user_order_$->{2021..2022}${(1..3).collect{t ->t.toString().padLeft(2,'0')} }
-          key-generator:
-            column: order_id
-            type: SNOWFLAKE
-          table-strategy:
-            standard:
-              shardingColumn: yearmonth
-              preciseAlgorithmClassName: com.sharding.jdbc.demo.service.YearMonthShardingAlgorithm
 # 整合mybatis的配置XXXXX
 mybatis:
   mapper-locations: classpath:mapper/*.xml

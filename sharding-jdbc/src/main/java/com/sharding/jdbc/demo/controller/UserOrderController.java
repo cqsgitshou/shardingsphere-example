@@ -1,40 +1,38 @@
 package com.sharding.jdbc.demo.controller;
 
 import com.sharding.jdbc.demo.entity.User;
+import com.sharding.jdbc.demo.entity.UserOrder;
 import com.sharding.jdbc.demo.mapper.UserMapper;
+import com.sharding.jdbc.demo.mapper.UserOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
 /**
  * @author: 学相伴-飞哥
  * @description: UserController
  * @Date : 2021/3/10
  */
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/userorder")
+public class UserOrderController {
     @Autowired
-    private UserMapper userMapper;
+    private UserOrderMapper userOrderMapper;
     @GetMapping("/save")
-    public String insert(User user ) {
+    public String insert(UserOrder userOrder ) {
 
-        user.setNickname("zhangsan"+ new Random().nextInt());
-        user.setPassword("1234567");
-        user.setSex(user.getSex()); // 垃圾代码
-        user.setBirthday("2021-10-10");
-        user.setAge(user.getAge());
-        userMapper.addUser(user);
+        userOrder.setCreateTime(new Date());
+        userOrderMapper.addUserOrder(userOrder);
         return "success";
     }
-    @GetMapping("/listuser")
-    public List<User> listuser() {
-        return userMapper.findUsers();
+    @GetMapping("/listuserorder")
+    public List<UserOrder> listuserorder() {
+        return userOrderMapper.listuserorder();
     }
 
 }

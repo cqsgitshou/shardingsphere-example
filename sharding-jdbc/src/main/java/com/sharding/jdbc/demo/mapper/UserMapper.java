@@ -17,7 +17,7 @@ public interface UserMapper {
      * @params [user]
      * @date 2021/3/10 17:14
      */
-    @Insert("insert into c_user(nickname,password,sex,birthday) values(#{nickname},#{password},#{sex},#{birthday})")
+    @Insert("insert into ksd_user(nickname,password,sex,birthday,age) values(#{nickname},#{password},#{sex},#{birthday},#{age})")
     void addUser(User user);
     /**
      * @author 学相伴-飞哥
@@ -25,6 +25,6 @@ public interface UserMapper {
      * @params [user]
      * @date 2021/3/10 17:14
      */
-    @Select("select * from c_user")
+    @Select("select * from ksd_user")
     List<User> findUsers();
 }
