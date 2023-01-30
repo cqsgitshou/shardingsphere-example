@@ -25,6 +25,6 @@ public interface UserMapper {
      * @params [user]
      * @date 2021/3/10 17:14
      */
-    @Select("select * from ksd_user order by create_time desc limit 0,10")
+    @Select("select * from ksd_user order by create_time desc,id desc limit 0,10")
     List<User> findUsers();
 }
