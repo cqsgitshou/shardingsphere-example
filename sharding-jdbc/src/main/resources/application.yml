@@ -33,26 +33,35 @@ spring:
         minPoolSize: 5
     # 配置默认数据源ds0
     sharding:
+      master-slave-rules:
+        # 配置主从名称，可以任意取名字
+        ms:
+          # 配置主库master，负责数据的写入
+          master-data-source-name: ds0
+          # 配置从库slave节点，多个从节点以逗号分隔
+          slave-data-source-names: ds1
+          # 配置slave节点的负载均衡均衡策略，采用轮询机制
+          load-balance-algorithm-type: round_robin
       # 默认数据源，主要用于写，注意一定要配置读写分离 ,注意：如果不配置，那么就会把三个节点都当做从slave节点，新增，修改和删除会出错。
-      default-data-source-name: ds0
+      default-data-source-name: ms
       # 配置分表的规则
       tables:
         # ksd_user 逻辑表名
         ksd_user:
           # 数据节点：数据源$->{0..N}.逻辑表名$->{0..N}
-          actual-data-nodes: ds$->{0..1}.ksd_user$->{0..1}
-          # 拆分库策略，也就是什么样子的数据放入放到哪个数据库中。
-          database-strategy:
-            standard:
-              shardingColumn: birthday
-              preciseAlgorithmClassName: com.sharding.jdbc.demo.service.BirthdayAlgorithm
+          actual-data-nodes: ms.ksd_user$->{0..1}
+#          # 拆分库策略，也就是什么样子的数据放入放到哪个数据库中。
+#          database-strategy:
+#            standard:
+#              shardingColumn: birthday
+#              preciseAlgorithmClassName: com.sharding.jdbc.demo.service.BirthdayAlgorithm
           table-strategy:
             inline:
               sharding-column: age    # 分片字段（分片键）
               algorithm-expression: ksd_user$->{age % 2} # 分片算法表达式
         user_order:
           # 数据节点：数据源$->{0..N}.逻辑表名$->{0..N}
-          actual-data-nodes: ds0.user_order_$->{2021..2022}${(1..3).collect{t ->t.toString().padLeft(2,'0')} }
+          actual-data-nodes: ms.user_order_$->{2021..2022}${(1..3).collect{t ->t.toString().padLeft(2,'0')} }
           key-generator:
             column: order_id
             type: SNOWFLAKE
@@ -60,6 +69,7 @@ spring:
             standard:
               shardingColumn: yearmonth
               preciseAlgorithmClassName: com.sharding.jdbc.demo.service.YearMonthShardingAlgorithm
+
 # 整合mybatis的配置XXXXX
 mybatis:
   mapper-locations: classpath:mapper/*.xml

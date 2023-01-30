@@ -1,7 +1,11 @@
 package com.sharding.jdbc.demo.controller;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import com.sharding.jdbc.demo.entity.User;
 import com.sharding.jdbc.demo.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,23 +22,34 @@ import java.util.Random;
  */
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
     @Autowired
     private UserMapper userMapper;
     @GetMapping("/save")
     public String insert(User user ) {
 
-        user.setNickname("zhangsan"+ new Random().nextInt());
-        user.setPassword("1234567");
-        user.setSex(user.getSex()); // 垃圾代码
-        user.setBirthday("2021-10-10");
-        user.setAge(user.getAge());
-        userMapper.addUser(user);
+        log.info("start:{}", DateUtil.format(new Date(), DatePattern.NORM_DATETIME_PATTERN));
+        for(int i=0;i<10;i++){
+            user.setNickname("zhangsan"+ new Random().nextInt());
+            user.setPassword("1234567");
+            user.setSex(user.getSex()); // 垃圾代码
+            user.setBirthday("2021-10-10");
+            user.setAge(i);
+            userMapper.addUser(user);
+        }
+
+        log.info("end:{}", DateUtil.format(new Date(), DatePattern.NORM_DATETIME_PATTERN));
         return "success";
     }
     @GetMapping("/listuser")
     public List<User> listuser() {
-        return userMapper.findUsers();
+        List<User> list = userMapper.findUsers();
+        System.out.println(list.size());
+        for(User user: list){
+            System.out.println(user.getId());
+        }
+        return list;
     }
 
 }

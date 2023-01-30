@@ -20,6 +20,7 @@ public class UserOrderService {
     private UserMapper userMapper;
     @Autowired
     private UserOrderMapper orderMapper;
+
     @ShardingTransactionType(TransactionType.XA)
     @Transactional(rollbackFor = Exception.class)
     public int saveUserOrder(User user, UserOrder order) {
