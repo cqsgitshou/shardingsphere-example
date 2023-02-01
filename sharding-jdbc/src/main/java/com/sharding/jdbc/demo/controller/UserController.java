@@ -33,7 +33,7 @@ public class UserController {
         for(int i=0;i<10;i++){
             user.setNickname("zhangsan"+ new Random().nextInt());
             user.setPassword("1234567");
-            user.setSex(user.getSex()); // 垃圾代码
+            user.setSex(1); // 垃圾代码
             user.setBirthday("2021-10-10");
             user.setAge(i);
             userMapper.addUser(user);
@@ -45,6 +45,16 @@ public class UserController {
     @GetMapping("/listuser")
     public List<User> listuser() {
         List<User> list = userMapper.findUsers();
+        System.out.println(list.size());
+        for(User user: list){
+            System.out.println(user.getId());
+        }
+        return list;
+    }
+
+    @GetMapping("/listuserorder")
+    public List<User> listuserorder() {
+        List<User> list = userMapper.listuserorder("zhangsan1173181170");
         System.out.println(list.size());
         for(User user: list){
             System.out.println(user.getId());
