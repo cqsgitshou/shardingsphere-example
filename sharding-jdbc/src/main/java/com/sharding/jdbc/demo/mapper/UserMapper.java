@@ -29,6 +29,13 @@ public interface UserMapper {
      */
     @Select("select * from ksd_user order by create_time desc,id desc limit 0,10")
     List<User> findUsers();
+    @Select("select u.* from ksd_user u INNER JOIN user_order o on u.id=o.user_id where u.id=#{id} order by u.create_time desc,u.id desc limit 0,10")
+    List<User> listuserorderById(Long id);
     @Select("select u.* from ksd_user u INNER JOIN user_order o on u.nickname=o.nickname where u.nickname=#{nickname} order by u.create_time desc,u.id desc limit 0,10")
     List<User> listuserorder(String nickName);
+    @Select("select * from ksd_user where nickname=#{nickname}")
+    User getuserByName(String nickName);
+
+    @Select("select * from ksd_user where id=#{id}")
+    User getuserById(Long id);
 }

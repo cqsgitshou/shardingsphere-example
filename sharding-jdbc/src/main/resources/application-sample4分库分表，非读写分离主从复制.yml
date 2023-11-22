@@ -41,6 +41,9 @@ spring:
         ksd_user:
           # 数据节点：数据源$->{0..N}.逻辑表名$->{0..N}
           actual-data-nodes: ds$->{0..1}.ksd_user$->{0..1}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
           # 拆分库策略，也就是什么样子的数据放入放到哪个数据库中。
           database-strategy:
             standard:
